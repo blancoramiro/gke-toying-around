@@ -5,30 +5,31 @@ metadata:
   namespace: argocd
 spec:
   generators:
-  - matrix:
-      generators:
-        - list:
-            elements:
-            - env: test
-              server: https://kubernetes.default.svc
-              name: my-gke-cluster
-        - git:
-            repoURL: https://github.com/blancoramiro/gke-toying-around
-            revision: HEAD
-            directories:
-            - path: my-gke-cluster/*
+#  - matrix:
+#      generators:
+#        - list:
+#            elements:
+#            - env: test
+#              server: https://kubernetes.default.svc
+#              name: my-gke-cluster
+    - git:
+        repoURL: https://github.com/blancoramiro/gke-toying-around
+        revision: HEAD
+        directories:
+        - path: my-gke-cluster/*
   template:
     metadata:
-      name: '{{path.basename}}-{{name}}'
+      name: '{{path.basename}}'
       namespace: default
     spec:
       project: default
       source:
         repoURL: https://github.com/blancoramiro/gke-toying-around
         targetRevision: HEAD
-        path: '{{path}}/{{env}}'
+        #path: '{{path}}/{{env}}'
+        path: '{{path}}'
       destination:
-        server: '{{server}}'
+        server: https://kubernetes.default.svc
         namespace: default
       syncPolicy:
         automated: 
