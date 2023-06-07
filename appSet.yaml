@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: my-gke-cluster
+  namespace: argocd
+spec:
+  generators:
+  - matrix:
+      generators:
+        - list:
+            elements:
+            - env: test
+              server: https://kubernetes.default.svc
+              name: my-gke-cluster
+        - git:
+            repoURL: https://github.com/blancoramiro/gke-toying-around
+            revision: HEAD
+            directories:
+            - path: my-gke-cluster/*
+  template:
+    metadata:
+      name: '{{path.basename}}-{{name}}'
+      namespace: default
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/blancoramiro/gke-toying-around
+        targetRevision: HEAD
+        path: '{{path}}/{{env}}'
+      destination:
+        server: '{{server}}'
+        namespace: default
+      syncPolicy:
+        automated: 
+          prune: true
+        syncOptions:
+        - CreateNamespace=true
+        - ServerSideApply=true
