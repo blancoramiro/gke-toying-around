@@ -556,7 +556,7 @@ datasources:
       access: proxy
       isDefault: true
     - name: Loki
-      type: 
+      type: loki
       url: http://loki-distributed-query-frontend-headless:3100
       access: proxy
 #    - name: CloudWatch
