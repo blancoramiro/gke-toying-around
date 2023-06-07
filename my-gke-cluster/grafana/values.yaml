@@ -555,6 +555,10 @@ datasources:
       url: http://prometheus-operated:9090
       access: proxy
       isDefault: true
+    - name: Loki
+      type: 
+      url: http://loki-distributed-query-frontend-headless:3100
+      access: proxy
 #    - name: CloudWatch
 #      type: cloudwatch
 #      access: proxy
