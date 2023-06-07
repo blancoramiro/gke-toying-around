@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "telemetry-demoapp.fullname" $ }}-dummyload
+  labels:
+    {{- include "telemetry-demoapp.labels" $ | nindent 4 }}
+spec:
+  schedule: "{{ .Values.dummy_schedule }}"
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: dummyload
+            image: "{{ .Values.dummyimage.repository }}:{{ .Values.dummyimage.tag | default .Chart.AppVersion }}"
+            imagePullPolicy: {{ .Values.dummyimage.pullPolicy }}
+            command:
+            - /bin/sh
+            - -ec
+            - "curl http://{{ include "telemetry-demoapp.fullname" $ }}-{{ (index .Values.deployments_name 0)}}:8080"
+          restartPolicy: OnFailure
