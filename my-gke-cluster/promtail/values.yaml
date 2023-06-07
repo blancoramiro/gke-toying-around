@@ -348,7 +348,7 @@ config:
   # Must be reference in `config.file` to configure `clients`
   # @default -- See `values.yaml`
   clients:
-    - url: http://loki-distributed-distributor:3100
+    - url: http://loki-distributed-distributor:3100/loki/api/v1/push
   # -- The config to enable tracing
   enableTracing: false
   # -- A section of reusable snippets that can be reference in `config.file`.
