@@ -41,6 +41,7 @@ jobs:
     - name: ArgoCD
       run: |
         helm repo add argo https://argoproj.github.io/argo-helm
+        helm install -f argocd-values.yaml argocd  argo/argo-cd
 #    - name: Terraform ArgoCD
 #      working-directory: ./terraform/argocd
 #      run: |
