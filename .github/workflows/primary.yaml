@@ -9,9 +9,16 @@ permissions: write-all
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+     run:
+       shell: bash
+       working-directory: ./terraform
+
     steps:
+
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
@@ -19,3 +26,10 @@ jobs:
         token_format: 'access_token'
         workload_identity_provider: 'projects/45727971247/locations/global/workloadIdentityPools/my-wi-pool/providers/provider1'
         service_account: 'terr-sa@myinfra1.iam.gserviceaccount.com'
+
+    - name: Setup terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Terraform init
+      run: terraform init 
+
