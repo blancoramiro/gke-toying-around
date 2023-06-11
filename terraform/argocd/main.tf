@@ -25,7 +25,7 @@ provider "google" {
 provider "helm" {
   kubernetes {
     host                   = "https://${google_container_cluster.primary.endpoint}"
-    cluster_ca_certificate = base64decode(google_container_cluster.primary.master_auth.0.cluster_ca_certificate)
+    cluster_ca_certificate = base64decode(data.google_container_cluster.primary.master_auth.0.cluster_ca_certificate)
     token                  = data.google_client_config.current.access_token
   }
 }
@@ -38,7 +38,7 @@ data "google_container_cluster" "primary" {
 }
 
 resource "kubernetes_namespace" "argocd" {
-  depends_on = [google_container_cluster.primary]
+  depends_on = [data.google_container_cluster.primary]
   metadata {
     annotations = {
       name = "argocd"
@@ -53,7 +53,7 @@ resource "kubernetes_namespace" "argocd" {
 }
 
 resource "helm_release" "argocd" {
-  depends_on = [google_container_cluster.primary, kubernetes_namespace.argocd]
+  depends_on = [data.google_container_cluster.primary, kubernetes_namespace.argocd]
   name       = "argocd"
   namespace  = "argocd"
   repository = "https://argoproj.github.io/argo-helm"
