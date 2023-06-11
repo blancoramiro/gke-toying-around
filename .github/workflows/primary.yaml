@@ -1,0 +1,16 @@
+name: Primary deployment
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v0.4.0'
+      with:
+        workload_identity_provider: 'projects/45727971247/locations/global/workloadIdentityPools/my-wi-pool/attribute.repository/blancoramiro/gke-toying-around'
+        service_account: 'terr-sa@myinfra1.iam.gserviceaccount.com'
