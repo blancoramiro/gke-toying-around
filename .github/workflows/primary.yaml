@@ -39,6 +39,7 @@ jobs:
         terraform apply -auto-approve -input=false
 
     - name: ArgoCD
+      working-directory: ../
       run: |
         pwd
         helm repo add argo https://argoproj.github.io/argo-helm
