@@ -42,9 +42,9 @@ jobs:
     - name: ArgoCD
       run: |
         ls
-        echo $(terraform output -raw gcloud_connect)
+        gcloud container clusters get-credentials $(terraform output -raw cluster_name) --region=$(terraform output -raw cluster_location)
         helm repo add argo https://argoproj.github.io/argo-helm
-        helm install -f argocd-values.yaml argocd argo/argo-cd
+        helm install -f ../argocd-values.yaml argocd argo/argo-cd
 #    - name: Terraform ArgoCD
 #      working-directory: ./terraform/argocd
 #      run: |
