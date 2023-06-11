@@ -39,12 +39,14 @@ jobs:
       run: |
         terraform init 
         terraform apply -auto-approve -input=false
+        echo "::set-output name=cluster_name::$(terraform output -raw cluster_name)"
+        echo "::set-output name=cluster_location::$(terraform output -raw cluster_location)"
 
-#    - id: 'get-credentials'
-#      uses: 'google-github-actions/get-gke-credentials@v1'
-#      with:
-#        cluster_name: ${steps.terraform.outputs.cluster_name}
-#        location: ${steps.terraform.outputs.cluster_location}
+    - id: 'get-credentials'
+      uses: 'google-github-actions/get-gke-credentials@v1'
+      with:
+        cluster_name: ${{steps.terraform.outputs.cluster_name}}
+        location: ${{steps.terraform.outputs.cluster_location}}
 
     - name: ArgoCD
       run: |
