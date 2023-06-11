@@ -32,15 +32,8 @@ jobs:
       with:
          terraform_version: 1.4.6
 
-
-    - name: Terraform init
-      run: terraform init 
-
-    - name: Terraform validate
-      run: terraform validate
-
-    - name: Terraform plan
-      run: terraform plan
-
-    - name: Terraform apply
-      run: terraform apply -auto-approve -input=false
+    - name: Terraform Deploy
+      working-directory: ./terraform/deploy
+      run: |
+        terraform init 
+        terraform apply -auto-approve -input=false
