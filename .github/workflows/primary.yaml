@@ -32,14 +32,14 @@ jobs:
       with:
          terraform_version: 1.4.6
 
-    - name: Terraform GKE
-      working-directory: ./terraform/gke
+    - name: Terraform
+      working-directory: ./terraform
       run: |
         terraform init 
         terraform apply -auto-approve -input=false
 
-    - name: Terraform ArgoCD
-      working-directory: ./terraform/argocd
-      run: |
-        terraform init 
-        terraform apply -auto-approve -input=false
+#    - name: Terraform ArgoCD
+#      working-directory: ./terraform/argocd
+#      run: |
+#        terraform init 
+#        terraform apply -auto-approve -input=false
