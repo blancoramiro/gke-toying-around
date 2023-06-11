@@ -53,6 +53,16 @@ jobs:
         echo '${{ steps.terraform.outputs.stdout || steps.terraform.outputs.stderr }}'
         echo '${{ steps.terraform.outputs.cluster_name}}'
         kubectl create ns argocd
+        cat << EOF | kubectl apply -f -
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          labels:
+            kubernetes.io/metadata.name: argocd
+          name: argocd
+        status:
+          phase: Active
+        EOF
         helm repo add argo https://argoproj.github.io/argo-helm
         helm install -f ../argocd-values.yaml -n argocd argocd argo/argo-cd
 #    - name: Terraform ArgoCD
