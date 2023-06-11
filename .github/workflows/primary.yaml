@@ -32,8 +32,8 @@ jobs:
       with:
          terraform_version: 1.4.6
 
-    - name: Terraform Deploy
-      working-directory: ./terraform/deploy
+    - name: Terraform GKE
+      working-directory: ./terraform/gke
       run: |
         terraform init 
         terraform apply -auto-approve -input=false
