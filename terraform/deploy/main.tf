@@ -86,6 +86,7 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
 }
 
 resource "kubernetes_namespace" "argocd" {
+  depends_on = [google_container_cluster.primary]
   metadata {
     annotations = {
       name = "argocd"
