@@ -43,8 +43,8 @@ jobs:
     - id: 'get-credentials'
       uses: 'google-github-actions/get-gke-credentials@v1'
       with:
-        cluster_name: ${{steps.terraform.outputs.cluster_name}}
-        location: ${{steps.terraform.outputs.cluster_location}}
+        cluster_name: ${steps.terraform.outputs.cluster_name}
+        location: ${steps.terraform.outputs.cluster_location}
 
     - name: ArgoCD
       run: |
