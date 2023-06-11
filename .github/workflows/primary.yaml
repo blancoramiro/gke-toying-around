@@ -37,3 +37,9 @@ jobs:
       run: |
         terraform init 
         terraform apply -auto-approve -input=false
+
+    - name: Terraform ArgoCD
+      working-directory: ./terraform/argocd
+      run: |
+        terraform init 
+        terraform apply -auto-approve -input=false
