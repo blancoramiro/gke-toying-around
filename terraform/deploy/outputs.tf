@@ -10,3 +10,7 @@ output "cluster_location" {
   description = "cluster location"
   value       = google_container_cluster.primary.location
 }
+output "registry" {
+  description = "artifact registry"
+  value       = google_artifact_registry_repository.myrepo
+}

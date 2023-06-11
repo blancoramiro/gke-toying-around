@@ -60,3 +60,12 @@ jobs:
       working-directory: .
       run: |
         kubectl apply -f appSet.yaml
+
+
+#    - name: Build and push Docker image Telemetry Demo App
+#      uses: docker/build-push-action@v2
+#      with:
+#        context: .
+#        push: 1.0.1
+#        tags: 
+#        labels: ${{ steps.metadata.outputs.labels }}

@@ -59,7 +59,7 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
   }
 }
 
-resource "google_artifact_registry_repository" "my-repo" {
+resource "google_artifact_registry_repository" "myrepo" {
   location      = "us-central1"
   repository_id = "my-repository"
   description   = "example docker repository"
