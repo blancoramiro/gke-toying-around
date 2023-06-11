@@ -41,7 +41,7 @@ jobs:
     - name: ArgoCD
       run: |
         ls
-        echo $(terraform output gcloud_connect)
+        echo $(terraform output -raw gcloud_connect)
         helm repo add argo https://argoproj.github.io/argo-helm
         helm install -f argocd-values.yaml argocd argo/argo-cd
 #    - name: Terraform ArgoCD
