@@ -106,5 +106,5 @@ resource "helm_release" "argocd" {
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
   version    = "5.36.1"
-  values     = [file("${path.module}/../argocd-values.yaml")]
+  values     = [file("${path.module}/../../argocd-values.yaml")]
 }
