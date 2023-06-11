@@ -15,5 +15,5 @@ jobs:
       uses: 'google-github-actions/auth@v1'
       with:
         token_format: 'access_token'
-        workload_identity_provider: 'projects/45727971247/locations/global/workloadIdentityPools/my-wi-pool/attribute.repository/blancoramiro/gke-toying-around'
+        workload_identity_provider: 'projects/45727971247/locations/global/workloadIdentityPools/my-wi-pool/providers/provider1'
         service_account: 'terr-sa@myinfra1.iam.gserviceaccount.com'
