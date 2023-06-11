@@ -19,6 +19,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: Setup terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+         terraform_version: 1.4.6
+         terraform_wrapper: false
+
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
@@ -26,12 +32,6 @@ jobs:
         token_format: 'access_token'
         workload_identity_provider: 'projects/45727971247/locations/global/workloadIdentityPools/my-wi-pool/providers/provider1'
         service_account: 'terr-sa@myinfra1.iam.gserviceaccount.com'
-
-    - name: Setup terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-         terraform_version: 1.4.6
-         terraform_wrapper: false
 
     - name: Deploy
       id: deploy
@@ -55,3 +55,8 @@ jobs:
         echo '${{ steps.deploy.outputs.cluster_name}}'
         terraform init 
         terraform apply -auto-approve -input=false
+
+    - name: ArgoCD Application Set
+      working-directory: .
+      run: |
+        kubectl apply -f appSet.yaml
