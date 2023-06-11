@@ -33,9 +33,9 @@ jobs:
          terraform_version: 1.4.6
          terraform_wrapper: false
 
-    - name: Terraform
-      id: terraform
-      working-directory: ./terraform
+    - name: Deploy
+      id: deploy
+      working-directory: ./terraform/deploy
       run: |
         terraform init 
         terraform apply -auto-approve -input=false
@@ -45,27 +45,13 @@ jobs:
     - id: 'get-credentials'
       uses: 'google-github-actions/get-gke-credentials@v1'
       with:
-        cluster_name: ${{steps.terraform.outputs.cluster_name}}
-        location: ${{steps.terraform.outputs.cluster_location}}
+        cluster_name: ${{steps.deploy.outputs.cluster_name}}
+        location: ${{steps.deploy.outputs.cluster_location}}
 
     - name: ArgoCD
+      working-directory: ./terraform/argocd
       run: |
-        echo '${{ steps.terraform.outputs.stdout || steps.terraform.outputs.stderr }}'
-        echo '${{ steps.terraform.outputs.cluster_name}}'
-        cat << EOF | kubectl apply -f -
-        apiVersion: v1
-        kind: Namespace
-        metadata:
-          labels:
-            kubernetes.io/metadata.name: argocd
-          name: argocd
-        status:
-          phase: Active
-        EOF
-        helm repo add argo https://argoproj.github.io/argo-helm
-        helm install -f ../argocd-values.yaml -n argocd argocd argo/argo-cd
-#    - name: Terraform ArgoCD
-#      working-directory: ./terraform/argocd
-#      run: |
-#        terraform init 
-#        terraform apply -auto-approve -input=false
+        echo '${{ steps.deploy.outputs.stdout || steps.deploy.outputs.stderr }}'
+        echo '${{ steps.deploy.outputs.cluster_name}}'
+        terraform init 
+        terraform apply -auto-approve -input=false
