@@ -113,4 +113,3 @@ resource "helm_release" "argocd" {
 #  depends_on = [helm_release.argocd]
 #  manifest   = yamldecode(file("${path.module}/../appSet.yaml"))
 #}
-
