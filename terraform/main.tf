@@ -28,8 +28,16 @@ provider "google" {
 
 provider "kubernetes" {
   host                   = "https://${google_container_cluster.primary.endpoint}"
-  token                  = google_container_cluster.primary.endpoint.default.access_token
-  cluster_ca_certificate = base64decode(google_container_cluster.primary.endpoint.ca_certificate)
+  cluster_ca_certificate = base64decode(google_container_cluster.primary.master_auth.0.cluster_ca_certificate)
+  token                  = data.google_client_config.current.access_token
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = "https://${google_container_cluster.primary.endpoint}"
+    cluster_ca_certificate = base64decode(google_container_cluster.primary.master_auth.0.cluster_ca_certificate)
+    token                  = data.google_client_config.current.access_token
+  }
 }
 
 
@@ -37,6 +45,8 @@ resource "google_service_account" "default" {
   account_id   = "service-account-id"
   display_name = "Service Account"
 }
+
+data "google_client_config" "current" {}
 
 resource "google_container_cluster" "primary" {
   name     = "my-gke-cluster"
@@ -75,13 +85,31 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
   }
 }
 
+resource "kubernetes_namespace" "argocd" {
+  metadata {
+    annotations = {
+      name = "argocd"
+    }
+
+    labels = {
+      app = "argocd"
+    }
+
+    name = "argocd"
+  }
+}
+
 resource "helm_release" "argocd" {
-  depends_on = [google_container_cluster.primary]
+  depends_on = [google_container_cluster.primary, kubernetes_namespace.argocd]
   name       = "argocd"
+  namespace  = "argocd"
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
-
-  #  values = [
-  #    file("${path.module}/nginx-values.yaml")
-  #  ]
+  version    = "5.36.1"
+  values     = [file("${path.module}/../argocd-values.yaml")]
 }
+
+#resource "kubernetes_manifest" "argocd-appSet" {
+#  depends_on = [helm_release.argocd]
+#  manifest   = yamldecode(file("${path.module}/../appSet.yaml"))
+#}
