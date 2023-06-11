@@ -1,7 +1,7 @@
 terraform {
   backend "gcs" {
     bucket = "myinfra1-tf-state"
-    prefix = "terraform/state/gke"
+    prefix = "terraform/state"
   }
   required_providers {
     google = {
