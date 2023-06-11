@@ -31,18 +31,24 @@ jobs:
       uses: hashicorp/setup-terraform@v2
       with:
          terraform_version: 1.4.6
-         terraform_wrapper: false
+         terraform_wrapper: true
 
     - name: Terraform
+      id: terraform
       working-directory: ./terraform
       run: |
         terraform init 
         terraform apply -auto-approve -input=false
 
+    - id: 'get-credentials'
+      uses: 'google-github-actions/get-gke-credentials@v1'
+      with:
+        cluster_name: ${{steps.terraform.outputs.cluster_name}}
+        location: ${{steps.terraform.outputs.cluster_location}}
+
     - name: ArgoCD
       run: |
         ls
-        gcloud container clusters get-credentials $(terraform output -raw cluster_name) --region=$(terraform output -raw cluster_location)
         helm repo add argo https://argoproj.github.io/argo-helm
         helm install -f ../argocd-values.yaml argocd argo/argo-cd
 #    - name: Terraform ArgoCD
