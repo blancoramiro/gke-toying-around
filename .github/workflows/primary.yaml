@@ -38,6 +38,9 @@ jobs:
         terraform init 
         terraform apply -auto-approve -input=false
 
+    - name: ArgoCD
+      run: |
+        helm repo add argo https://argoproj.github.io/argo-helm
 #    - name: Terraform ArgoCD
 #      working-directory: ./terraform/argocd
 #      run: |
