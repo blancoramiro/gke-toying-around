@@ -75,7 +75,7 @@ resource "google_artifact_registry_repository" "myrepo" {
 }
 
 resource "google_project_iam_member" "allow_image_pull" {
-  project = var.project
+  project = local.project
   role    = "roles/artifactregistry.reader"
   member  = "serviceAccount:${google_service_account.default.email}"
 }
