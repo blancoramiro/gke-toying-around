@@ -91,7 +91,7 @@ deployments_name:
 max_hops: 10
 min_hops: 5
 
-otlp_endpoint: "tempo-distributed-distributor.grafana.svc.cluster.local:4317"
+otlp_endpoint: "tempo-distributed-distributor.default.svc.cluster.local:4317"
 
 dummy_schedule: "*/5 * * * *"
 dummyimage:
