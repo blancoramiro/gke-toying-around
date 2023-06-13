@@ -559,6 +559,10 @@ datasources:
       type: loki
       url: http://loki-distributed-query-frontend-headless:3100
       access: proxy
+    - name: Tempo
+      type: tempo
+      url: http://tempo-distributed-query-frontend:3100
+      access: proxy
 #    - name: CloudWatch
 #      type: cloudwatch
 #      access: proxy
