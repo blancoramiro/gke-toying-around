@@ -62,7 +62,7 @@ jobs:
         kubectl apply -f appSet.yaml
 
     - name: Build and push Docker image Telemetry Demo App
-      working-directory: .
+      working-directory: telemetry-demoapp
       run: |
         gcloud auth configure-docker us-central1-docker.pkg.dev
         docker build . -t telemetry-demoapp:1.0.1
