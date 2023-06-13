@@ -323,7 +323,7 @@ metricsGenerator:
       # -- A list of remote write endpoints.
       # -- https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
       remote_write:
-        - http://prometheus-operated:9090/api/v1/write 
+        - prometheus-operated:9090/api/v1/write 
   service:
     # -- Annotations for Metrics Generator service
     annotations: {}
