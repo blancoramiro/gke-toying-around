@@ -63,7 +63,7 @@ jobs:
 
     - name: Build and push Docker image Telemetry Demo App
       working-directory: .
-      run:
+      run: |
         gcloud auth configure-docker us-central1-docker.pkg.dev
         docker build . -t telemetry-demoapp:1.0.1
         docker tag telemetry-demoapp:1.0.1 us-central1-docker.pkg.dev/myinfra1/my-repository/telemetry-demoapp:1.0.1
