@@ -19,8 +19,8 @@ provider "google" {
 }
 
 resource "google_service_account" "default" {
-  account_id   = "service-account-id"
-  display_name = "Service Account"
+  account_id   = "service-account-gke"
+  display_name = "Service Account GKE nodes"
 }
 
 resource "google_container_cluster" "primary" {
@@ -51,8 +51,9 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
     preemptible  = true
     machine_type = "e2-medium"
 
-    # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
     service_account = google_service_account.default.email
+
+    # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
@@ -65,4 +66,9 @@ resource "google_artifact_registry_repository" "myrepo" {
   description   = "example docker repository"
   format        = "DOCKER"
 
+}
+
+resource "google_project_iam_member" "allow_image_pull" {
+  role   = "roles/artifactregistry.reader"
+  member = "serviceAccount:${google_service_account.default.email}"
 }
