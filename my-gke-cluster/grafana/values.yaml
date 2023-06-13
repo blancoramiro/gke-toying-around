@@ -572,7 +572,7 @@ datasources:
         nodeGraph:	
         enabled: true
         search:
-          hide: true
+          hide: false
         serviceMap:
           datasourceUid: prometheus
         spanBar:	
