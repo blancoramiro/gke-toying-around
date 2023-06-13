@@ -794,7 +794,7 @@ traces:
       receiverConfig: {}
     grpc:
       # -- Enable Tempo to ingest Open Telemetry GRPC traces
-      enabled: false
+      enabled: true
       # -- GRPC receiver advanced config
       receiverConfig: {}
   opencensus:
