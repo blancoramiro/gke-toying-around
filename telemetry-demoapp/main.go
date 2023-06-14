@@ -274,7 +274,7 @@ func main() {
 	prometheus.MustRegister(opsProcessed)
 
 	log.Info().
-		Int("MAX HOPS", demoapp_conf.destination_svcs_count).
+		Int("MAX HOPS", demoapp_conf.max_hops).
 		Msg("Running...")
 
 		otelHandler := otelhttp.NewHandler(http.HandlerFunc(demoapp_conf.run), demoapp_conf.svc_name[8:])
