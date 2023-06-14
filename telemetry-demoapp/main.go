@@ -34,6 +34,8 @@ import (
 type DEMOAPP_CONF struct {
 	destination_svcs []string
 	destination_svcs_count int
+	max_hops int
+	min_hops int
 	svc_name string
 	otlp_endpoint string
 }
@@ -67,7 +69,7 @@ func (demoapp_conf *DEMOAPP_CONF) run(w http.ResponseWriter, req *http.Request) 
 			return
 		}
 		hop++
-		if(hop > demoapp_conf.destination_svcs_count) {
+		if(hop > demoapp_conf.max_hops) {
 			log.Info().
 			Str("trace_id", span.SpanContext().TraceID().String()).
 			Str("span_id", span.SpanContext().SpanID().String()).
@@ -233,6 +235,20 @@ func main() {
 
 	if demoapp_conf.destination_svcs_count < 1 {
 		log.Error().Msg("Need at least 2 svcs in DEMOAPP_DESTINATION_SVCS")
+		return
+	}
+
+	if val, ok := os.LookupEnv("MAX_HOPS"); ok {
+		demoapp_conf.max_hops = strconv.Atoi(val)
+	} else {
+		log.Error().Msg("Missing MAX_HOPS")
+		return
+	}
+
+	if val, ok := os.LookupEnv("MIN_HOPS"); ok {
+		demoapp_conf.min_hops = strconv.Atoi(val)
+	} else {
+		log.Error().Msg("Missing MIN_HOPS")
 		return
 	}
 
