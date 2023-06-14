@@ -238,14 +238,14 @@ func main() {
 		return
 	}
 
-	if val, ok := os.LookupEnv("MAX_HOPS"); ok {
+	if val, ok := os.LookupEnv("DEMOAPP_MAX_HOPS"); ok {
 		demoapp_conf.max_hops, _ = strconv.Atoi(val)
 	} else {
 		log.Error().Msg("Missing MAX_HOPS")
 		return
 	}
 
-	if val, ok := os.LookupEnv("MIN_HOPS"); ok {
+	if val, ok := os.LookupEnv("DEMOAPP_MIN_HOPS"); ok {
 		demoapp_conf.min_hops, _ = strconv.Atoi(val)
 	} else {
 		log.Error().Msg("Missing MIN_HOPS")
