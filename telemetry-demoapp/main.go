@@ -73,7 +73,7 @@ func (demoapp_conf *DEMOAPP_CONF) run(w http.ResponseWriter, req *http.Request) 
 			log.Info().
 			Str("trace_id", span.SpanContext().TraceID().String()).
 			Str("span_id", span.SpanContext().SpanID().String()).
-			Int("hop", hop).Int("hops_limit", demoapp_conf.destination_svcs_count).Msg("Max hops reached!")
+			Int("hop", hop).Int("hops_limit", demoapp_conf.max_hops).Msg("Max hops reached!")
 			fmt.Fprintf(w, "DONE\n")
 			return
 		}
@@ -98,7 +98,7 @@ func (demoapp_conf *DEMOAPP_CONF) run(w http.ResponseWriter, req *http.Request) 
 		branches = 1
 	}
 
-	log.Info().Int("hop", hop).Int("hops_limit", demoapp_conf.destination_svcs_count).
+	log.Info().Int("hop", hop).Int("hops_limit", demoapp_conf.max_hops).
 		Int("branches", branches).
 		Str("trace_id", span.SpanContext().TraceID().String()).
 		Str("span_id", span.SpanContext().SpanID().String()).
@@ -117,7 +117,7 @@ func (demoapp_conf *DEMOAPP_CONF) run(w http.ResponseWriter, req *http.Request) 
 	//client := http.Client{Transport: otelhttp.NewTransport(http.DefaultTransport)}
 	client := http.Client{}
 
-	for branches > 0 && hop <= demoapp_conf.destination_svcs_count {
+	for branches > 0 && hop <= demoapp_conf.max_hops {
 		ctx, req_span := tracer.Start(ctx, "client_req", trace.WithSpanKind(trace.SpanKindClient)) // <= Making span a client kind
 		defer req_span.End()
 
@@ -136,7 +136,7 @@ func (demoapp_conf *DEMOAPP_CONF) run(w http.ResponseWriter, req *http.Request) 
 			Str("trace_id", req_span.SpanContext().TraceID().String()).
 			Str("span_id", req_span.SpanContext().SpanID().String()).
 			Msg("Client Request");
-		new_req, _ := http.NewRequestWithContext(ctx, "GET", "http://"+demoapp_conf.destination_svcs[hop]+":8080", nil)
+		new_req, _ := http.NewRequestWithContext(ctx, "GET", "http://"+demoapp_conf.destination_svcs[rand.Intn(demoapp_conf.destination_svcs_count)]+":8080", nil)
 
 		q := req.URL.Query()
 		q.Set("hop", strconv.Itoa(hop))
