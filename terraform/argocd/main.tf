@@ -1,8 +1,4 @@
 terraform {
-  backend "gcs" {
-    bucket = "myinfra1-tf-state"
-    prefix = "terraform/state/argocd"
-  }
   required_providers {
     google = {
       source  = "hashicorp/google"
@@ -17,13 +13,6 @@ terraform {
       version = "~> 2.8.0"
     }
   }
-}
-
-provider "google" {
-
-  project = "myinfra1"
-  region  = "us-central1"
-  zone    = "us-central1-c"
 }
 
 provider "kubernetes" {
@@ -44,8 +33,8 @@ data "google_client_config" "current" {
 }
 
 data "google_container_cluster" "primary" {
-  name     = "my-gke-cluster"
-  location = "us-central1"
+  name     = var.clustername
+  location = var.region
 }
 
 resource "kubernetes_namespace" "argocd" {

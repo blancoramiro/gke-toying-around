@@ -3,6 +3,7 @@ name: Primary deployment
 on:
   push:
     branches: master
+    paths: 'terraform/**'
 
 permissions: write-all
 
@@ -35,10 +36,10 @@ jobs:
 
     - name: Deploy
       id: deploy
-      working-directory: ./terraform/deploy
+      working-directory: ./terraform
       run: |
-        terraform init 
-        terraform apply -auto-approve -input=false
+        terragrunt init 
+        terrgrunt run-all apply --terragrunt-non-interactive
         echo "cluster_name=$(terraform output -raw cluster_name)" >> $GITHUB_OUTPUT
         echo "cluster_location=$(terraform output -raw cluster_location)" >> $GITHUB_OUTPUT
 
@@ -47,14 +48,6 @@ jobs:
       with:
         cluster_name: ${{steps.deploy.outputs.cluster_name}}
         location: ${{steps.deploy.outputs.cluster_location}}
-
-    - name: ArgoCD
-      working-directory: ./terraform/argocd
-      run: |
-        echo '${{ steps.deploy.outputs.stdout || steps.deploy.outputs.stderr }}'
-        echo '${{ steps.deploy.outputs.cluster_name}}'
-        terraform init 
-        terraform apply -auto-approve -input=false
 
     - name: ArgoCD Application Set
       working-directory: .

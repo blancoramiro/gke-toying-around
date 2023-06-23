@@ -1,8 +1,4 @@
 terraform {
-  backend "gcs" {
-    bucket = "myinfra1-tf-state"
-    prefix = "terraform/state"
-  }
   required_providers {
     google = {
       source  = "hashicorp/google"
@@ -11,27 +7,14 @@ terraform {
   }
 }
 
-locals {
-  project = "myinfra1"
-  region  = "us-central1"
-  zone    = "us-central1-c"
-}
-
-provider "google" {
-
-  project = local.project
-  region  = local.region
-  zone    = local.zone
-}
-
 resource "google_service_account" "default" {
   account_id   = "service-account-gke"
   display_name = "Service Account GKE nodes"
 }
 
 resource "google_container_cluster" "primary" {
-  name     = "my-gke-cluster"
-  location = local.region
+  name     = var.clustername
+  location = var.region
 
   # We can't create a cluster with no node pool defined, but we want to only use
   # separately managed node pools. So we create the smallest possible default
@@ -45,11 +28,11 @@ resource "google_container_cluster" "primary" {
 
 resource "google_container_node_pool" "primary_preemptible_nodes" {
   name       = "my-node-pool"
-  location   = local.region
+  location   = var.region
   cluster    = google_container_cluster.primary.name
   node_count = 2
   node_locations = [
-    local.zone,
+    var.zone,
   ]
 
 
@@ -67,7 +50,7 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
 }
 
 resource "google_artifact_registry_repository" "myrepo" {
-  location      = local.region
+  location      = var.region
   repository_id = "my-repository"
   description   = "example docker repository"
   format        = "DOCKER"
@@ -75,7 +58,7 @@ resource "google_artifact_registry_repository" "myrepo" {
 }
 
 resource "google_project_iam_member" "allow_image_pull" {
-  project = local.project
+  project = var.project
   role    = "roles/artifactregistry.reader"
   member  = "serviceAccount:${google_service_account.default.email}"
 }
