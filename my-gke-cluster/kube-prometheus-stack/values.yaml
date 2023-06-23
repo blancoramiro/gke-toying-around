@@ -2845,7 +2845,7 @@ prometheus:
 
     # EnableFeatures API enables access to Prometheus disabled features.
     # ref: https://prometheus.io/docs/prometheus/latest/disabled_features/
-    enableFeatures: []
+    enableFeatures:
      - exemplar-storage
 
     ## Image of Prometheus.
