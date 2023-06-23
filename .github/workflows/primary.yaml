@@ -44,8 +44,8 @@ jobs:
       run: |
         terragrunt init 
         terragrunt run-all apply --terragrunt-non-interactive
-        echo "cluster_name=$(terraform output -raw cluster_name)" >> $GITHUB_OUTPUT
-        echo "cluster_location=$(terraform output -raw cluster_location)" >> $GITHUB_OUTPUT
+        echo "cluster_name=$(terraform -chdir=deploy output -raw cluster_name)" >> $GITHUB_OUTPUT
+        echo "cluster_location=$(terraform -chdir=deploy output -raw cluster_location)" >> $GITHUB_OUTPUT
 
     - id: 'get-credentials'
       uses: 'google-github-actions/get-gke-credentials@v1'
