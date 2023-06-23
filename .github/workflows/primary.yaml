@@ -26,6 +26,11 @@ jobs:
          terraform_version: 1.4.6
          terraform_wrapper: false
 
+    - name: Setup Terragrunt
+      uses: autero1/action-terragrunt@v1.1.0
+      with:
+        terragrunt_version: 0.39.2
+
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
