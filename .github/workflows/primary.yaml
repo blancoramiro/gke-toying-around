@@ -3,7 +3,6 @@ name: Primary deployment
 on:
   push:
     branches: master
-    paths: 'terraform/**'
 
 permissions: write-all
 
