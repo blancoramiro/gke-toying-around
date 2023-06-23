@@ -7,33 +7,33 @@ metadata:
   namespace: {{ .Values.serviceMonitor.namespace }}
   labels:
 {{ toYaml .Values.serviceMonitor.labels | indent 4}}
-  spec:
-    endpoints:
-    - targetPort: {{ .Values.service.port }}
-  {{- if .Values.serviceMonitor.interval }}
-      interval: {{ .Values.serviceMonitor.interval }}
-  {{- end }}
-      path: /metrics
-  {{- if .Values.serviceMonitor.timeout }}
-      scrapeTimeout: {{ .Values.serviceMonitor.timeout }}
-  {{- end }}
-  {{- if .Values.serviceMonitor.metricRelabelings }}
-      metricRelabelings:
-  {{ toYaml .Values.serviceMonitor.metricRelabelings | indent 4 }}
-  {{- end }}
-    jobLabel: {{ .Values.fullnameOverride }}
-    namespaceSelector:
-      matchNames:
-      - {{ .Release.Namespace }}
-    selector:
-      matchLabels:
-        app: {{ .Values.fullnameOverride }}
-        release: {{ .Release.Name }}
-  {{- if .Values.serviceMonitor.targetLabels }}
-    targetLabels:
-  {{- range .Values.serviceMonitor.targetLabels }}
-      - {{ . }}
-  {{- end }}
-  {{- end }}
+spec:
+  endpoints:
+  - targetPort: {{ .Values.service.port }}
+{{- if .Values.serviceMonitor.interval }}
+    interval: {{ .Values.serviceMonitor.interval }}
+{{- end }}
+    path: /metrics
+{{- if .Values.serviceMonitor.timeout }}
+    scrapeTimeout: {{ .Values.serviceMonitor.timeout }}
+{{- end }}
+{{- if .Values.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+{{ toYaml .Values.serviceMonitor.metricRelabelings | indent 4 }}
+{{- end }}
+  jobLabel: {{ .Values.fullnameOverride }}
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app: {{ .Values.fullnameOverride }}
+      release: {{ .Release.Name }}
+{{- if .Values.serviceMonitor.targetLabels }}
+  targetLabels:
+{{- range .Values.serviceMonitor.targetLabels }}
+    - {{ . }}
+{{- end }}
+{{- end }}
 {{- end }}
 {{- end }}
