@@ -103,5 +103,6 @@ dummyimage:
   tag: "7.84.0"
 
 serviceMonitor:
+  enabled: true
   labels:
     name: "telemetry-demoapp"
