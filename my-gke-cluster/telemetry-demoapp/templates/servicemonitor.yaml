@@ -7,7 +7,6 @@ metadata:
   namespace: {{ .Values.serviceMonitor.namespace }}
   labels:
 {{ toYaml .Values.serviceMonitor.labels | indent 4}}
-{{- end }}
   spec:
     endpoints:
     - targetPort: {{ .Values.service.port }}
@@ -36,4 +35,5 @@ metadata:
       - {{ . }}
   {{- end }}
   {{- end }}
+{{- end }}
 {{- end }}
