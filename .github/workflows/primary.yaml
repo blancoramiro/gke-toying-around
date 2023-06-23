@@ -3,6 +3,9 @@ name: Primary deployment
 on:
   push:
     branches: master
+    path:
+      - 'terraform/**'
+      - 'telemetry-demoapp/**'
 
 permissions: write-all
 
