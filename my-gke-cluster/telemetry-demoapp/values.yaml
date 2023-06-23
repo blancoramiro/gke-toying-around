@@ -101,3 +101,7 @@ dummyimage:
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "7.84.0"
+
+serviceMonitor:
+  labels:
+    name: "telemetry-demoapp"
