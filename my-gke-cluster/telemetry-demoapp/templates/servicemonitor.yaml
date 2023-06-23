@@ -27,7 +27,7 @@ spec:
     - {{ .Release.Namespace }}
   selector:
     matchLabels:
-      app.kubernetes.io/name=demoapp: {{ .Values.fullnameOverride }}
+      app.kubernetes.io/name: {{ .Values.fullnameOverride }}
 {{- if .Values.serviceMonitor.targetLabels }}
   targetLabels:
 {{- range .Values.serviceMonitor.targetLabels }}
