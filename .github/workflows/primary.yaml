@@ -43,7 +43,7 @@ jobs:
       working-directory: ./terraform
       run: |
         terragrunt init 
-        terrgrunt run-all apply --terragrunt-non-interactive
+        terragrunt run-all apply --terragrunt-non-interactive
         echo "cluster_name=$(terraform output -raw cluster_name)" >> $GITHUB_OUTPUT
         echo "cluster_location=$(terraform output -raw cluster_location)" >> $GITHUB_OUTPUT
 
